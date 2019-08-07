@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import Axios from 'axios';
 
 
 class MedicamentosForm extends Component {
@@ -10,7 +10,9 @@ class MedicamentosForm extends Component {
         }
     }
 
-    handleNombreChange = event => {
+    handleNameChange = event => {
+        console.log(event.target.value)
+        
         this.setState({
             nombre: event.target.value
         })
@@ -18,24 +20,28 @@ class MedicamentosForm extends Component {
 
     handleSave=  event => {
         event.preventDefault()
-        axios.post("http://localhost:3001/medicamentos", {
+        Axios.post("http://localhost:3001/medicamentos", {
             name: this.state.nombre
         })
-        .thrn( res => {
+        .then( res => {
             console.log(res.data)
         })
-        this.props.history.puch("/medicamentos")
+        .catch(err => {
+            console.log(err);
+        })
+        this.props.history.push("/medicamentos");
+        
     }
 
     render() { 
         return (
             <div className="medicamentos-form">
-                <form class="ui form">
-                    <div class="field">
+                <form className="ui form">
+                    <div className="field">
                         <label>Nombre medicamento</label>
-                        <input type="text" name="first-name" placeholder="Nombre del medicamento" value={this.state.nombre} onChange={this.handleNombreChange}></input>
+                        <input type="text" name="medicamento" placeholder="Nombre del medicamento" value={this.state.name} onChange={this.handleNameChange}></input>
                     </div>
-                    <button className="ui primary button" onChange={this.handleSave}>Guardar</button>
+                    <button className="ui primary button" onClick={this.handleSave}>Guardar</button>
                 </form>
             </div>
         );
